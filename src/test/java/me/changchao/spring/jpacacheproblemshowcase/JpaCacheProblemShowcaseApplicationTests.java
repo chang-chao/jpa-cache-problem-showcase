@@ -32,14 +32,14 @@ public class JpaCacheProblemShowcaseApplicationTests {
 			fooService.incFoo(fooId);
 		};
 
-		Thread thread1 = new Thread(runnable);
+//		Thread thread1 = new Thread(runnable);
 
 		Thread thread2 = new Thread(runnable);
 
-		thread1.start();
+//		thread1.start();
 		thread2.start();
 
-		thread1.join();
+//		thread1.join();
 		thread2.join();
 
 		Foo foo2 = fooRepository.findOne(fooId);
