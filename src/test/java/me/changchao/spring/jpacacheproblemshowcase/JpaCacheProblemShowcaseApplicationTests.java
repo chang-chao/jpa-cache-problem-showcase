@@ -25,15 +25,22 @@ public class JpaCacheProblemShowcaseApplicationTests {
 	@Test
 	@SneakyThrows
 	public void testCache() {
-		long fooId = 1l;
-		Foo foo1 = fooRepository.findOne(fooId);
-		Thread thread2 = new Thread(() -> {
-			fooService.incFoo(fooId);
-		});
-		thread2.start();
-		thread2.join();
+		final long fooId = 1l;
 
-		fooService.incFoo(fooId);
+		Runnable runnable = () -> {
+			Foo foo1 = fooRepository.findOne(fooId);
+			fooService.incFoo(fooId);
+		};
+
+		Thread thread1 = new Thread(runnable);
+
+		Thread thread2 = new Thread(runnable);
+
+		thread1.start();
+		thread2.start();
+
+		thread1.join();
+		thread2.join();
 
 		Foo foo2 = fooRepository.findOne(fooId);
 
